@@ -145,5 +145,4 @@ fun main(args: Array<String>) {
     } else {
         endGame("Dealer", samHand, dealerHand)
     }
-
 }
