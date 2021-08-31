@@ -3,7 +3,7 @@ import java.io.IOException
 import kotlin.system.exitProcess
 
 fun readDeck(fileName: String): MutableList<String> {
-    val filecontent = try {
+    val fileContent = try {
         File(fileName).bufferedReader().readLine().split(",").toMutableList()
     } catch (e: IOException) {
         println("Provided file doesn't exist, good bye!")
@@ -11,7 +11,7 @@ fun readDeck(fileName: String): MutableList<String> {
     }
 
     // Lets trim all white space from list entries before returning it. It makes life easier.
-    val deck = filecontent.map { it.trim() }
+    val deck = fileContent.map { it.trim() }
     return deck.toMutableList()
 }
 
@@ -92,13 +92,13 @@ fun main(args: Array<String>) {
         dealerHand = dealCard(dealerHand, deck)
     }
 
-    // Calculate inital score
+    // Calculate initial score
     var samScore: Int
     var dealerScore: Int
     samScore = handValue(samHand)
     dealerScore = handValue(dealerHand)
 
-    // Check if either player has blackjack. If Sam has blackjack, he winns the game.
+    // Check if either player has blackjack. If Sam has blackjack, he wins the game.
     if (checkBlackJack(samScore)) {
         endGame("Sam", samHand, dealerHand)
     }
