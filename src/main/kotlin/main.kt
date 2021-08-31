@@ -100,13 +100,11 @@ fun main(args: Array<String>) {
 
     // Check if either player has blackjack. If Sam has blackjack, he winns the game.
     if (checkBlackJack(samScore)) {
-        println("Det er blackJack til Sam")
         endGame("Sam", samHand, dealerHand)
     }
 
     // If we are here, Sam Doesn't have blackjack. If the dealer does, we can end here.
     if (checkBlackJack(dealerScore)) {
-        println("Det er blackJack til dealer")
         endGame("dealer", samHand, dealerHand)
     }
 
@@ -148,6 +146,4 @@ fun main(args: Array<String>) {
         endGame("Dealer", samHand, dealerHand)
     }
 
-    println("samscore: $samScore")
-    println("dealerscore: $dealerScore")
 }
