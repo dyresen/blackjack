@@ -6,7 +6,7 @@ fun readDeck(fileName: String): MutableList<String> {
     val filecontent = try {
         File(fileName).bufferedReader().readLine().split(",").toMutableList()
     } catch (e: IOException) {
-        println("Provided file doesn't exist, buy!")
+        println("Provided file doesn't exist, good bye!")
         exitProcess(0)
     }
 
@@ -73,14 +73,11 @@ fun busted(score: Int): Boolean {
     return false
 }
 
-/*fun drawCardBasedOnStrategy(hand: MutableList<String>): Boolean {
-
-}*/
-
 fun endGame(winner: String, samHand: MutableList<String>, dealerHand: MutableList<String>): String {
-    println("Winner $winner")
-    println("Sam: $samHand")
-    println("Dealer: $dealerHand")
+    val separator = ", "
+    println(winner)
+    println("Sam: ${samHand.joinToString(separator)}")
+    println("Dealer: ${dealerHand.joinToString(separator)}")
     exitProcess(0)
 }
 
@@ -107,53 +104,50 @@ fun main(args: Array<String>) {
         endGame("Sam", samHand, dealerHand)
     }
 
+    // If we are here, Sam Doesn't have blackjack. If the dealer does, we can end here.
     if (checkBlackJack(dealerScore)) {
         println("Det er blackJack til dealer")
         endGame("dealer", samHand, dealerHand)
     }
 
-    // Check if both players have 22 points. If they do, dealer wins the game.
+    // Dealer wins when both players starts with 22 (A + A)
     if (samScore == 22 && dealerScore == 22) {
         endGame("Dealer", samHand, dealerHand)
     }
 
-    // check if one of the players are busted and end game if one is
-    busted(samScore)
-    busted(dealerScore)
-
     // keep drawing cards until player has 17 or more
-
     while (samScore < 17) {
         samHand = dealCard(samHand, deck)
         samScore = handValue(samHand)
     }
-    // println("Sam har $samScore points")
 
+    // Sam has lost the game if their total is higher than 21
     if (busted(samScore)) {
         endGame("Dealer", samHand, dealerHand)
     }
 
-    // dealer draws cards until value is higher than sam or busted
+    // Dealer draws cards until value is higher than sam or busted
     while (dealerScore <= samScore) {
         dealerHand = dealCard(dealerHand, deck)
         dealerScore = handValue(dealerHand)
     }
 
-    // println("dealer has $dealerScore points")
+    // The dealer has lost the game if their total is higher than 21
+    if (busted(dealerScore)) {
+        endGame("Sam", samHand, dealerHand)
+    }
 
     // Check score and return status
     if (samScore <= 21 && dealerScore >= 22) {
         endGame("Sam", samHand, dealerHand)
     }
 
-    /* TODO: Skal det virkelig være dealerScore <= 22 her? eller < 22? */
-    if (samScore <= 21 && dealerScore <= 22 && dealerScore > samScore) {
+    if (samScore > dealerScore) {
+        endGame("Sam", samHand, dealerHand)
+    } else {
         endGame("Dealer", samHand, dealerHand)
     }
 
-    /*if (busted(samScore)) {
-        endGame("Dealer", samHand, dealerHand)
-    }*/
-
-    /* TODO: Noe skjedde når begge fikk 17 poeng. Ingen vinner ble kåret. Husker ikke om det er fikset. Sjekk det.  */
+    println("samscore: $samScore")
+    println("dealerscore: $dealerScore")
 }
