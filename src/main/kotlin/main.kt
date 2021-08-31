@@ -2,6 +2,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.system.exitProcess
 
+// Read a file and return a list with cards
 fun readDeck(fileName: String): MutableList<String> {
     val fileContent = try {
         File(fileName).bufferedReader().readLine().split(",").toMutableList()
@@ -15,6 +16,7 @@ fun readDeck(fileName: String): MutableList<String> {
     return deck.toMutableList()
 }
 
+// Generate a random list of playing cards.
 fun generateDeck(): MutableList<String> {
     val cardColors = arrayOf("C", "D", "H", "S")
     val cardValues = arrayOf("2", "3", "4", "5", "6", "7", "8", "9", "10", "A", "J", "Q", "K")
@@ -32,11 +34,14 @@ fun generateDeck(): MutableList<String> {
     return deck
 }
 
+// Deal a card to a player (hand). Takes two arguments. The playing hand and a deck. It then draws the first card in
+// the deck and returns the hand.
 fun dealCard(hand: MutableList<String>, deck: MutableList<String>): MutableList<String> {
     hand.add(deck.removeFirst())
     return hand
 }
 
+// Calculate the current hand.
 fun handValue(hand: MutableList<String>): Int {
     var total = 0
     for (item in hand) {
@@ -59,6 +64,7 @@ fun handValue(hand: MutableList<String>): Int {
     return total
 }
 
+// Check whether we have a blackjack. Returns true/false
 fun checkBlackJack(score: Int): Boolean {
     if (score == 21) {
         return true
@@ -66,6 +72,7 @@ fun checkBlackJack(score: Int): Boolean {
     return false
 }
 
+// Check whether the player "busted" their hand by getting a score above 21
 fun busted(score: Int): Boolean {
     if (score > 21) {
         return true
@@ -73,6 +80,7 @@ fun busted(score: Int): Boolean {
     return false
 }
 
+// Print winner, the hands and exit the game.
 fun endGame(winner: String, samHand: MutableList<String>, dealerHand: MutableList<String>): String {
     val separator = ", "
     println(winner)
@@ -81,6 +89,7 @@ fun endGame(winner: String, samHand: MutableList<String>, dealerHand: MutableLis
     exitProcess(0)
 }
 
+// The actual game.
 fun main(args: Array<String>) {
     val deck = if (args.isNotEmpty()) readDeck(args[0]) else generateDeck()
     var samHand = mutableListOf<String>()
@@ -140,6 +149,7 @@ fun main(args: Array<String>) {
         endGame("Sam", samHand, dealerHand)
     }
 
+    // Highest score wins.
     if (samScore > dealerScore) {
         endGame("Sam", samHand, dealerHand)
     } else {
